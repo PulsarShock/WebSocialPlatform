@@ -1,0 +1,13 @@
+#后端收取的来自前端的json数据清单
+api:
+  auth:
+    login:
+      user_email: xxx@xx.com
+      password: xxx
+    logout:
+      user_email: xxx@xx.com
+      user_token: xxxxx
+    signup:
+      user_email: xxx@xx.com
+      user_password: xxx
+      user_verifycode: xxxxxx

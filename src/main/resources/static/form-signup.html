@@ -5,7 +5,7 @@
 
     <!-- Basic Page Needs
     ================================================== -->
-    <title>Simplest Social Network HTML Template</title>
+    <title>完成您的注册！</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Simplest is - Professional A unique and beautiful collection of UI elements">
@@ -39,36 +39,36 @@
 
                 <!-- column one -->
                 <div class="uk-margin-auto-vertical uk-text-center uk-animation-scale-up p-3 uk-light">
-                    <img src="assets/images/logo-light-icon.png" alt="">
-                    <h3 class="mb-3 mt-lg-4"> Simplest</h3>
-                    <p>Share what's new and life moments with <br> your friends. </p>
+                    <img src="assets/images/logo.svg" alt="">
+                    <h3 class="mb-3 mt-lg-4"> 赭峦斋</h3>
+                    <p>与您的朋友们分享新鲜事 <br> 与特别时刻 </p>
                 </div>
 
                 <!-- column two -->
                     <div class="uk-card-default px-5 py-8">
                         <div class="mb-4 uk-text-center">
-                            <h2 class="mb-0"> Create new Account</h3>
-                            <p class="my-2">Login to manage your account.</p>
+                            <h2 class="mb-0"> 只差最后一步~</h2>
+                            <p class="my-2">建立您的账户</p>
                         </div>
 
-                    <form class="uk-child-width-1-1 uk-grid-small" uk-grid>
+                    <form class="uk-child-width-1-1 uk-grid-small" uk-grid method="post">
 
                         <div>
                             <div class="uk-form-group">
-                                <label class="uk-form-label"> Name</label>
+                                <label name="username" class="uk-form-label"> 姓名</label>
 
                                 <div class="uk-position-relative w-100">
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-user"></i>
                                     </span>
-                                    <input class="uk-input" type="text" placeholder="Full name">
+                                    <input class="uk-input" type="text" placeholder="全名">
                                 </div>
 
                             </div>
                         </div>
                         <div>
                             <div class="uk-form-group">
-                                <label class="uk-form-label"> Email</label>
+                                <label name="useremail" class="uk-form-label"> 邮箱</label>
 
                                 <div class="uk-position-relative w-100">
                                     <span class="uk-form-icon">
@@ -80,29 +80,42 @@
                             </div>
                         </div>
 
-                        <div class="uk-width-1-2@s">
+                        <div class="uk-form-group">
                             <div class="uk-form-group">
-                                <label class="uk-form-label"> Password</label>
+                                <label name="password" class="uk-form-label"> 密码</label>
 
                                 <div class="uk-position-relative w-100">
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-lock"></i>
                                     </span>
-                                    <input class="uk-input" type="password" placeholder="********">
+                                    <input class="uk-input" type="password" placeholder="填写密码">
                                 </div>
 
                             </div>
                         </div>
-                        <div class="uk-width-1-2@s">
+                        <div class="uk-form-group">
                             <div class="uk-form-group">
-                                <label class="uk-form-label"> Confirm password</label>
+                                <label name="confirmpassword" class="uk-form-label"> 确认密码</label>
 
                                 <div class="uk-position-relative w-100">
                                     <span class="uk-form-icon">
                                         <i class="icon-feather-lock"></i>
                                     </span>
-                                    <input class="uk-input" type="password" placeholder="********">
+                                    <input class="uk-input" type="password" placeholder="再次确认">
                                 </div>
+
+                            </div>
+                        </div>
+						<div class="uk-form-group">
+                            <div class="uk-form-group">
+                                <label name="verifycode" class="uk-form-label"> 验证码</label>
+
+                                <div class="uk-position-relative w-100">
+                                    <input class="uk-input" style="width:30%" type="text/normal" placeholder="填写6位数字验证码">
+									<br><br>
+									<button name="sendverifycode" class="btn button primary small block" style="width:20%">获取验证码</button>
+                                </div>
+								
 
                             </div>
                         </div>
@@ -110,10 +123,10 @@
                         <div>
                             <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                                 <div class="uk-width-expand@s">
-                                    <p> Do you have account <a href="form-login.html">Sign in</a></p>
+                                    <p> 已有账号？<a href="form-login.html">登录</a></p>
                                 </div>
                                 <div class="uk-width-auto@s">
-                                    <input type="submit" class="button primary" value="Get Started"></input>
+                                    <button name="register" class="btn button primary small block" style="height:40px;width:100px;font-size:15px">注册！</button>
                                 </div>
                             </div>
                         </div>
@@ -135,8 +148,8 @@
     ================================================== -->
     <script src="assets/js/uikit.js"></script>
     <script src="assets/js/simplebar.js"></script>
-    
-
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/api/auth/signup.js"></script>
 
 </body>
 

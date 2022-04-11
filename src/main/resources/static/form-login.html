@@ -5,7 +5,7 @@
 
     <!-- Basic Page Needs
     ================================================== -->
-    <title>Simplest Social Network HTML Template</title>
+    <title>登入</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Simplest is - Professional A unique and beautiful collection of UI elements">
@@ -39,21 +39,21 @@
 
                 <!-- column one -->
                 <div class="uk-margin-auto-vertical uk-text-center uk-animation-scale-up p-3 uk-light">
-                    <img src="assets/images/logo-light-icon.png" alt="">
-                    <h3 class="mb-3 mt-lg-4"> Simplest</h3>
-                    <p>Share what's new and life moments with <br> your friends. </p>
+                    <img src="assets/images/logo.svg" alt="">
+                    <h3 class="mb-3 mt-lg-4"> 赭峦斋</h3>
+                    <p>与您的朋友们分享新鲜事 <br> 与特别时刻 </p>
                 </div>
 
                 <!-- column two -->
                 <div class="uk-card-default px-5 py-8">
                     <div class="mb-4 uk-text-center">
-                        <h2 class="mb-0"> Welcome back</h3>
-                        <p class="my-2">Login to manage your account.</p>
+                        <h2 class="mb-0"> 进入赭峦斋社交平台之前</h2>
+                        <p class="my-2">登录您的账号</p>
                     </div>
                     <form>
 
                         <div class="uk-form-group">
-                            <label class="uk-form-label"> Email</label>
+                            <label name="useremail" class="uk-form-label"> 邮箱</label>
 
                             <div class="uk-position-relative w-100">
                                 <span class="uk-form-icon">
@@ -65,35 +65,23 @@
                         </div>
 
                         <div class="uk-form-group">
-                            <label class="uk-form-label"> Password</label>
+                            <label name="password" class="uk-form-label"> 密码</label>
 
                             <div class="uk-position-relative w-100">
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-lock"></i>
                                 </span>
-                                <input class="uk-input" type="password" placeholder="********">
-                            </div>
-
-                        </div>
-
-                        <div class="uk-form-group">
-                            <label class="uk-form-label"> Confirm password</label>
-
-                            <div class="uk-position-relative w-100">
-                                <span class="uk-form-icon">
-                                    <i class="icon-feather-lock"></i>
-                                </span>
-                                <input class="uk-input" type="password" placeholder="********">
+                                <input class="uk-input" type="password" placeholder="填写密码">
                             </div>
 
                         </div>
 
                         <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                             <div class="uk-width-expand@s">
-                                <p> Don't have account <a href="form-singup.html">Sign up</a></p>
+                                <p> 没有账号？ <a href="form-signup.html">快速注册</a></p>
                             </div>
                             <div class="uk-width-auto@s">
-                                <button type="submit" class="button primary">Get Started</button>
+                                <button name="login" type="submit" class="button primary">登录</button>
                             </div>
                         </div>
 
@@ -114,8 +102,8 @@
     ================================================== -->
     <script src="assets/js/uikit.js"></script>
     <script src="assets/js/simplebar.js"></script>
-    
-
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/api/auth/login.js"></script>
 
 </body>
 

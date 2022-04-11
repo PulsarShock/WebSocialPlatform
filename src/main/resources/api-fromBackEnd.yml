@@ -1,0 +1,28 @@
+#这是前端会从后端接收到的json信息清单
+#每次请求都要携带user_token
+#认证相关状态码：401未授权，402授权已过期，403认证失败（用于登录检验）,405登出失败
+api:
+  auth:
+    login:
+      success:
+        code: 200
+        user_token: xxxx
+        reason: "login success!"
+      failed:
+        code: 403
+        reason: "login failed!"
+    logout:
+      success:
+        code: 200
+        reason: "logout success!"
+      failed:
+        code: 405
+        reason: "logout failed!"
+    signup:
+      success:
+        code: 200
+        reason: "signup success!"
+      failed:
+        #100401用户邮箱已注册，100402密码不符合规范，100403验证码错误
+        code: 选择一种
+        reason: "signup failed!"

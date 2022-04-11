@@ -1,1 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/WebSocialPlatform
+    hikari:
+      username: root
+      password: zckdemima123
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: classpath:/static/
