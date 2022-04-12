@@ -1,5 +1,5 @@
 #这是前端会从后端接收到的json信息清单
-#每次请求都要携带user_token
+#每次请求都要携带user_token，附带在头部中进行校验，同时session中存储用户的邮箱、姓名等内容，方便service读取
 #认证相关状态码：401未授权，402授权已过期，403认证失败（用于登录检验）,405登出失败
 api:
   auth:
@@ -23,6 +23,14 @@ api:
         code: 200
         reason: "signup success!"
       failed:
-        #100401用户邮箱已注册，100402密码不符合规范，100403验证码错误
+        #100401用户邮箱已注册，100402验证码错误
         code: 选择一种
-        reason: "signup failed!"
+        reason: "used emailaddress!" / "wrong verifycode!"
+    getverifycode:
+      #100403验证码还未过期，100404发送验证码失败
+      success:
+        code: 200
+        reason: "get code success!"
+      failed:
+        code: 100403/100404
+        reason: "verifycode still exists!" / "get code failed!"

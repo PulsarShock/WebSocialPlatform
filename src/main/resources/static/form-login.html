@@ -50,28 +50,28 @@
                         <h2 class="mb-0"> 进入赭峦斋社交平台之前</h2>
                         <p class="my-2">登录您的账号</p>
                     </div>
-                    <form>
+                    <div>
 
                         <div class="uk-form-group">
-                            <label name="useremail" class="uk-form-label"> 邮箱</label>
+                            <div  class="uk-form-label"> 邮箱</div>
 
                             <div class="uk-position-relative w-100">
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-mail"></i>
                                 </span>
-                                <input class="uk-input" type="email" placeholder="name@example.com">
+                                <input id="UserEmail" class="uk-input" type="email" placeholder="name@example.com">
                             </div>
 
                         </div>
 
                         <div class="uk-form-group">
-                            <label name="password" class="uk-form-label"> 密码</label>
+                            <div  class="uk-form-label"> 密码</div>
 
                             <div class="uk-position-relative w-100">
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-lock"></i>
                                 </span>
-                                <input class="uk-input" type="password" placeholder="填写密码">
+                                <input id="Password" class="uk-input" type="password" placeholder="填写密码">
                             </div>
 
                         </div>
@@ -81,11 +81,11 @@
                                 <p> 没有账号？ <a href="form-signup.html">快速注册</a></p>
                             </div>
                             <div class="uk-width-auto@s">
-                                <button name="login" type="submit" class="button primary">登录</button>
+                                <button id="login" class="button primary" onclick="dologin()">登录</button>
                             </div>
                         </div>
 
-                    </form>
+                    </div>
                 </div><!--  End column two -->
 
             </div>
@@ -103,7 +103,15 @@
     <script src="assets/js/uikit.js"></script>
     <script src="assets/js/simplebar.js"></script>
     <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/api/auth/login.js"></script>
+    <script src="assets/js/api/auth/userAuth.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script>
+        let token=sessionStorage.getItem("user_token")
+        console.log(token)
+        if(token!==null){
+            window.location.href="/feeds.html"
+        }
+    </script>
 
 </body>
 

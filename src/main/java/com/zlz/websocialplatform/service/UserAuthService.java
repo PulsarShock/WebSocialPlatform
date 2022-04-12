@@ -1,7 +1,14 @@
 package com.zlz.websocialplatform.service;
 
-import org.springframework.stereotype.Service;
+import com.zlz.websocialplatform.entity.Account.Account;
+import com.zlz.websocialplatform.entity.Account.AccountForSignup;
 
-@Service
-public class UserAuthService  {
+public interface UserAuthService {
+
+    String loginProcess(Account account);
+
+    void signupProcess(AccountForSignup account);
+
+    void logoutProcess(String userEmail, String user_token);
+
 }
