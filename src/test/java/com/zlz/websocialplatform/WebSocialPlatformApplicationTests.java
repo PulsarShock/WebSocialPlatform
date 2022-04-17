@@ -23,17 +23,7 @@ class WebSocialPlatformApplicationTests {
 
     @Test
     void contextLoads() {
-        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-        //mapper.createUser("1@qq",encoder.encode("111"));
-        List<User> list = new ArrayList<>();
-        list.add(new User("nnn","aaa",12));
-        list.add(new User("www","aarrra",123));
-        list.add(new User("eee","aatttda",41));
-        //RestBean<List<User>> r=new RestBean<>(200,"hh",list);
-        RestBean<User> r=new RestBean<>(200,"hh",new User("nnn","aaa",12));
-        RestBean<String> r2=new RestBean<>(200,"oo","ppp");
-        log.info(r.toString());
-        log.info(r2.toString());
+        System.out.println(JSON.parseObject("'777'"));
     }
 
 }
