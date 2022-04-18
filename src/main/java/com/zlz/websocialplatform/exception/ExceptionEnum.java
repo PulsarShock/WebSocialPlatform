@@ -3,10 +3,12 @@ package com.zlz.websocialplatform.exception;
 public enum ExceptionEnum {
 
     UNAUTHORIZED(401,"未授权！"),
-    AUTHORIZATION_OUT_OF_TIME(402,"授权已过期！"),
+    INVALID_TOKEN(402,"口令错误！"),
     LOGGING_FAILED(403,"登录失败！"),
-    NOT_FOUND(404,"未找到资源！"),
+    NOT_FOUND(404,"请求的资源不存在或已被删除！"),
     LOGOUT_FAILED(405,"登出失败！"),
+    TIME_OUT(406,"超时！"),
+    INTERNAL_ERROR(500,"服务器内部错误！"),
 
     USED_EMAIL_ADDRESS(100401,"用户邮箱已注册！"),
     WRONG_VERIFICATION_CODE(100402,"验证码错误！"),

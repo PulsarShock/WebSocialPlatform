@@ -27,7 +27,7 @@ public class AuthController {
         Account account = JSON.parseObject(userInfo).toJavaObject(Account.class);
         RestBean<String> resp=new RestBean<>(200,"success!");
         //我用两种字符串前缀对code队列和token队列做了区分
-        account.setUserEmail("Token."+account.getUserEmail());
+        account.setUserEmail("Token:"+account.getUserEmail());
         String token=userAuthService.loginProcess(account);
         return resp.setData(token).toString();
     }
@@ -37,7 +37,7 @@ public class AuthController {
         log.info("用户 {} 申请登出",logoutUserEmail);
         RestBean<Void> resp=new RestBean<>(200,"success!");
         //我用两种字符串前缀对code队列和token队列做了区分
-        userAuthService.logoutProcess("Token."+logoutUserEmail,token);
+        userAuthService.logoutProcess("Token:"+logoutUserEmail,token);
         log.info("用户 {} 登出成功！",logoutUserEmail);
         return resp.toString();
     }
@@ -48,7 +48,7 @@ public class AuthController {
         log.info("注册用户信息：{}",account.toString());
         RestBean<Void> resp=new RestBean<>(200,"success!");
         //我用两种字符串前缀对code队列和token队列做了区分
-        account.setUserEmail("Code."+account.getUserEmail());
+        account.setUserEmail("Code:"+account.getUserEmail());
         userAuthService.signupProcess(account);
         return resp.toString();
     }
@@ -58,7 +58,7 @@ public class AuthController {
         log.info("用户 {} 申请邮箱验证码",userEmail);
         RestBean<Void> resp=new RestBean<>(200,"success!");
         //我用两种字符串前缀对code队列和token队列做了区分
-        verifyCodeService.sendEmail("Code."+userEmail);
+        verifyCodeService.sendEmail("Code:"+userEmail);
         log.info("获取验证码成功！");
         return resp.toString();
     }

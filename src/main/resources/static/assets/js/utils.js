@@ -1,8 +1,8 @@
-function get(url,data, success){
+function get(url, params, success){
     $.ajax({
         type: "get",
         url: url,
-        data: {},
+        data: params,
         async: true,
         contentType: "application/json",
         xhrFields: {
@@ -24,4 +24,8 @@ function post(url, data, success){
         },
         success: success
     });
+}
+
+function relocate(user_params,url){
+    window.location.href=url+"?user_email="+user_params["user_email"]+"&user_token="+user_params["user_token"]
 }

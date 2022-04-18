@@ -107,9 +107,21 @@
     <script src="assets/js/utils.js"></script>
     <script>
         let token=sessionStorage.getItem("user_token")
-        console.log(token)
         if(token!==null){
-            window.location.href="/feeds.html"
+            user_params={
+                "user_email":sessionStorage.getItem("user_email"),
+                "user_token":sessionStorage.getItem("user_token")
+            }
+            get("/test",user_params,function (resp) {
+                let respbody = JSON.parse(resp)
+                if(respbody["code"]===402){
+                    sessionStorage.removeItem("user_token")
+                    sessionStorage.removeItem("user_email")
+                }
+                else {
+                    relocate(user_params,"/feeds.html")
+                }
+            })
         }
     </script>
 

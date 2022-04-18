@@ -18,8 +18,8 @@ function doregister() {
         window.alert("密码不符合规范！应包含大小写字母、数字和特殊字符，且长度不小于8位！")
         return
     }
-    console.log(JSON.stringify(data))
-    post("/api/auth/signup",JSON.stringify(data),function (resp) {
+    console.log(data)
+    post("/api/auth/signup",data,function (resp) {
         let respbody = JSON.parse(resp)
         if(respbody["code"]===200){
             window.alert("注册成功！现在转入登录前界面~")
@@ -63,13 +63,17 @@ function dologin() {
     let data={}
     data.UserEmail=$.trim($("#UserEmail").val())
     data.Password=$.trim($("#Password").val())
-    post("/api/auth/login",JSON.stringify(data),function (resp) {
+    post("/api/auth/login",data,function (resp) {
         let respbody = JSON.parse(resp)
-        if(respbody["code"]===200){
+        if (respbody["code"] === 200) {
             window.alert("登录成功！")//TODO:可能换个更好的提示方式？
-            sessionStorage.setItem("user_token",respbody["data"])
-            sessionStorage.setItem("user_email",data.UserEmail)
-            window.location.href="/feeds.html"
+            let user_params = {
+                "user_email": data.UserEmail,
+                "user_token": respbody["data"]
+            }
+            sessionStorage.setItem("user_token", user_params["user_token"])
+            sessionStorage.setItem("user_email", user_params["user_email"])
+            relocate(user_params,"/feeds.html")
         }
         if(respbody["code"]===403){
             window.alert("登录失败！用户名或密码错误！")
@@ -78,24 +82,18 @@ function dologin() {
 }
 
 function dologout() {
-    $.ajax({
-        type: 'GET',
-        url: '/api/auth/logout',
-        contentType: "application/json",
-        headers: {
-            user_token: sessionStorage.getItem("user_token"),
-            user_email: sessionStorage.getItem("user_email")
-        },
-        success: function (resp) {
-            let respbody = JSON.parse(resp)
-            if(respbody["code"]===200){
-                window.alert("已登出！")
-                sessionStorage.removeItem("user_token")
-                sessionStorage.removeItem("user_email")
-            }
-            else {
-                window.alert("未获得授权！")
-            }
+    get("/api/auth/logout",{
+        "user_email":sessionStorage.getItem("user_email"),
+        "user_token":sessionStorage.getItem("user_token")
+    },function (resp) {
+        let respbody = JSON.parse(resp)
+        if(respbody["code"]===200){
+            window.alert("已登出！")
+            sessionStorage.removeItem("user_token")
+            sessionStorage.removeItem("user_email")
+        }
+        else {
+            window.alert("未获得授权！")
         }
     })
 }

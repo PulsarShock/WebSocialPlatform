@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -38,12 +39,12 @@ public class UserAuthServiceImpl implements UserAuthService  {
     }
 
     protected boolean isUserEmailMatchesPwd(String userEmail, String Pwd) {
-        String CryptPwd = mapper.getPwdByEmail(userEmail);
+        String CryptPwd = mapper.getPwdByEmail(userEmail.split(":")[1]);//mapper使用的email都要去掉前缀
         return encoder.matches(Pwd,CryptPwd);
     }
 
     protected boolean isUserEmailExists(String userEmail) {
-        return mapper.containsEmail(userEmail)!=null;
+        return mapper.containsEmail(userEmail.split(":")[1])!=null;
     }
 
     protected boolean isTokenValid(String userEmail, String user_token) {
@@ -51,7 +52,7 @@ public class UserAuthServiceImpl implements UserAuthService  {
     }
 
     protected void createUserAccount(String userEmail, String password, String name) {
-        mapper.createUser(userEmail,encoder.encode(password),name);
+        mapper.createUser(userEmail.split(":")[1],encoder.encode(password),name);
     }
 
     @Override
@@ -63,13 +64,12 @@ public class UserAuthServiceImpl implements UserAuthService  {
                 stringRedisTemplate.delete(account.getUserEmail());
             }
             String user_token= DigestUtils.md5DigestAsHex((account.getUserEmail()+account.getPassword()+new Date()).getBytes(StandardCharsets.UTF_8));
-            operations.set(account.getUserEmail(), user_token);
+            operations.set(account.getUserEmail(), user_token,60, TimeUnit.MINUTES);
             return user_token;
         }
         else{
             throw new BaseProjectException(ExceptionEnum.LOGGING_FAILED);
         }
-
     }
 
     @Override

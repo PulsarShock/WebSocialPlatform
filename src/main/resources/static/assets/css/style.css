@@ -5275,7 +5275,7 @@ button.mark-as-read:hover {
   top: 0;
   z-index: 1000000;
   background: red;
-  background: url(../images/icon-play.svg) no-repeat;
+  background: no-repeat;
   background-size: auto 50%;
   background-position: center;
 }
@@ -9566,7 +9566,7 @@ ul.story-side-list li a .story-user-innr p span.story-time-ago{
 .sl_find_frns_user_info p {color: #a0a0a0;margin-top: 2px;margin-bottom: 0;font-size: 13px;}
 .sl_find_frns_user_info p b {background-color: #ececec;padding: 3px 9px;border-radius: 100px;}
 .sl_find_frns_user_btns {display:flex; padding: 0 10px;}
-.sl_find_frns_user_btns span .btn {width: 100%;tant;font-size: 13.6px !important;font-weight: 500;line-height: 2.2;display: flex;align-items: center;text-align: center;flex: 1;justify-content: center;padding: 3px 10px !important;border-radius: 8px;outline: none;}
+.sl_find_frns_user_btns span .btn {width: 100%;font-size: 13.6px !important;font-weight: 500;line-height: 2.2;display: flex;align-items: center;text-align: center;flex: 1;justify-content: center;padding: 3px 10px !important;border-radius: 8px;outline: none;}
 .sl_find_frns_user_btns .btn svg {margin-right: 4px !important;margin-top: -4px;height: 16px;width: 17px;vertical-align: middle;margin: -3px 3px 0 -1px;fill: rgba(255,255,255,.32);display: block;}
 .sl_find_frns_user_btns > span { width: 100%; padding: 10px 4px;}
 .sl_find_frns_user_btns > span:last-child {margin-right: 0 }
