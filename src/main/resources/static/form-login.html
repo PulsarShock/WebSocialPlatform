@@ -51,8 +51,9 @@
                         <p class="my-2">登录您的账号</p>
                     </div>
                     <div>
-
-                        <div class="uk-form-group">
+                    <form onsubmit="return false">
+                        <label id="1">
+                            <div class="uk-form-group">
                             <div  class="uk-form-label"> 邮箱</div>
 
                             <div class="uk-position-relative w-100">
@@ -61,21 +62,22 @@
                                 </span>
                                 <input id="UserEmail" class="uk-input" type="email" placeholder="name@example.com">
                             </div>
+                            </div>
+                        </label>
+                        <label id="2">
+                            <div class="uk-form-group">
+                                <div  class="uk-form-label"> 密码</div>
 
-                        </div>
-
-                        <div class="uk-form-group">
-                            <div  class="uk-form-label"> 密码</div>
-
-                            <div class="uk-position-relative w-100">
+                                <div class="uk-position-relative w-100">
                                 <span class="uk-form-icon">
                                     <i class="icon-feather-lock"></i>
                                 </span>
-                                <input id="Password" class="uk-input" type="password" placeholder="填写密码">
+                                    <input id="Password" class="uk-input" type="password" placeholder="填写密码">
+                                </div>
+
                             </div>
-
-                        </div>
-
+                        </label>
+                    </form>
                         <div class="mt-4 uk-flex-middle uk-grid-small" uk-grid>
                             <div class="uk-width-expand@s">
                                 <p> 没有账号？ <a href="form-signup.html">快速注册</a></p>
@@ -84,7 +86,6 @@
                                 <button id="login" class="button primary" onclick="dologin()">登录</button>
                             </div>
                         </div>
-
                     </div>
                 </div><!--  End column two -->
 
@@ -105,25 +106,6 @@
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script src="assets/js/api/auth/userAuth.js"></script>
     <script src="assets/js/utils.js"></script>
-    <script>
-        let token=sessionStorage.getItem("user_token")
-        if(token!==null){
-            user_params={
-                "user_email":sessionStorage.getItem("user_email"),
-                "user_token":sessionStorage.getItem("user_token")
-            }
-            get("/test",user_params,function (resp) {
-                let respbody = JSON.parse(resp)
-                if(respbody["code"]===402){
-                    sessionStorage.removeItem("user_token")
-                    sessionStorage.removeItem("user_email")
-                }
-                else {
-                    relocate(user_params,"/feeds.html")
-                }
-            })
-        }
-    </script>
 
 </body>
 

@@ -1,12 +1,15 @@
 package com.zlz.websocialplatform.controller;
 
 import com.zlz.websocialplatform.entity.RestBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Slf4j
 public class MainController {//后端不做页面跳转，通通交给前端，除了入口
 
     @RequestMapping("/")
@@ -14,7 +17,7 @@ public class MainController {//后端不做页面跳转，通通交给前端，�
         return "redirect:/index.html" ;
     }
 
-    @GetMapping("/test")
+    @RequestMapping("/api/test")
     @ResponseBody
     public String test(){
         RestBean<String> rb=new RestBean<>(200,"success!");

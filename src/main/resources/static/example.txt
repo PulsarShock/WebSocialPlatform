@@ -1,0 +1,96 @@
+单条评论：
+                                <div class="post-comments-single" id="__标识码__">
+                                    <div class="post-comment-avatar">
+                                        <img src="__头像__" alt="?" id="avatar">
+                                    </div>
+                                    <div class="post-comment-text">
+                                        <div class="post-comment-text-inner">
+                                            <h6 id="user_name"> __名字__</h6>
+                                            <p id="context">__内容__</p>
+                                        </div>
+                                        <div class="uk-text-small">
+                                            <a href="#" class="text-primary mr-1" style="font-size: 13px" activated="false" id="up">
+                                                <img src="assets/images/thumbs-up.png" style="width: 2%;height: 2%">
+                                                __点赞数__
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                            <a href="#" class="text-danger" style="font-size: 13px" activated="false" id="down">
+                                                <img src="assets/images/thumbs-down.png" style="width: 2%;height: 2%">
+                                                __点踩数__
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                     （可选）<a href="#" class="text-dark" style="font-size: 13px" onclick="delete(1,__标识码__)">
+                                                <i class="uil-trash"></i>
+                                                删除
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                            <span>发表于 __时间__</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+动态：
+                        <div class="post" style="width:150%" id="__标识码__">
+                            <div class="post-heading">
+                                <div class="post-avature">
+                                    <img src="__头像__" alt="?" id="avatar">
+                                </div>
+                                <div class="post-title">
+                                    <a href="#">
+                                        <h4 id="name">__名字__</h4>
+                                    </a>
+                                </div>
+                                <div class="post-btn-action">
+                                    <span class="icon-more uil-ellipsis-h"></span>
+                                    <div class="mt-0 p-2" uk-dropdown="pos: top-right;mode:hover ">
+                                 （可选）<ul class="uk-nav uk-dropdown-nav">
+                                            <li><a href="#" onclick="shutdown_comments(__标识码__)"> <i class="uil-comment-slash mr-1"></i>关闭评论</a></li>
+                                            <li><a href="#" onclick="delete(0,__标识码__)" class="text-danger"> <i class="uil-trash-alt mr-1"></i>删除 </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-description">
+
+                                这里是具体内容
+                                <div class="post-state-details">
+                                    <div>
+                                        <p>发布于 __时间__</p>
+                                    </div>
+                                    <p> __浏览人数__</p>
+                                </div>
+
+                            </div>
+
+                            <div class="post-state">
+                                <div class="post-state-btns" activated="false">
+                                    <img src="assets/images/thumbs-up.png" style="width: 5%;height: 5%">
+                                    <span id="up" style="color: blue">
+                                        __点赞数__
+                                    </span>
+                                </div>
+                                <div class="post-state-btns" activated="false">
+                                    <img src="assets/images/thumbs-down.png" style="width: 5%;height: 5%">
+                                    <span id="down" style="color: red">
+                                        __点踩数__
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- post comments -->
+                                这里是生成评论的地方
+
+                                <div class="post-add-comment">
+                                    <div class="post-add-comment-avature">
+                                        <img src="__浏览者头像__" alt="?">
+                                    </div>
+                                    <div class="post-add-comment-text-area" style="width: 83%">
+                                        <input type="text" class="uk-input" placeholder="写点评价~"/>
+                                    </div>
+                                    <a href="#" class="button primary px-4" style="position: absolute;right: 1%">发布~</a>
+                                </div>
+
+                            </div>
+
+
+                        </div>

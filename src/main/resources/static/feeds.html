@@ -540,12 +540,12 @@
        </div>
 
 
-            <div class="main_content_inner">
+            <div class="main_content_inner" >
 
 
                 <div uk-grid>
 
-                    <div class="uk-width-2-3@m fead-area">
+                    <div class="uk-width-2-3@m fead-area" onload="get_all_posts(sessionStorage.getItem('user_email'))">
 
                         <div class="post-newer mt-lg-2" style="width:150%">
 
@@ -597,7 +597,7 @@
 
                         </div>
 
-                        <div class="post" style="width:150%">
+                        <div class="post" style="width:150%" id="identity">
                             <!--TODO:这是一条完整的动态-->
                             <div class="post-heading">
                                 <div class="post-avature">
@@ -634,9 +634,17 @@
 
                             <div class="post-state">
                                 <!--TODO:需要写点赞相关的js-->
-                                <div class="post-state-btns"> <i class="uil-thumbs-up"></i> 126<span> 喜欢 </span>
+                                <div class="post-state-btns">
+                                    <img src="assets/images/thumbs-up.png" style="width: 5%;height: 5%">
+                                    <span id="up" style="color: blue">
+                                        126
+                                    </span>
                                 </div>
-                                <div class="post-state-btns"> <i class="uil-thumbs-down"></i> 18 <span> 不喜欢</span>
+                                <div class="post-state-btns">
+                                    <img src="assets/images/thumbs-down.png" style="width: 5%;height: 5%">
+                                    <span id="down" style="color: red">
+                                        18
+                                    </span>
                                 </div>
                             </div>
 
@@ -653,9 +661,37 @@
                                             <p>这是一串超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级长的测试文字</p>
                                         </div>
                                         <div class="uk-text-small">
-                                            <!--TODO:每条动态独享一个特征码，类似b站av号，然后每条动态的一个评论独享一个特征码，生成的时候带上相应id。每次请求数据时，先请求动态列表，然后生成每条动态，再依次请求动态的评论，给每条动态都插入评论，完成。
-                                            -->
+                                            <!--TODO:每条动态独享一个特征码，类似b站av号，然后每条动态的一个评论独享一个特征码，生成的时候带上相应id。每次请求数据时，先请求动态列表，然后生成每条动态，再依次请求动态的评论，给每条动态都插入评论，完成。-->
                                             <!--TODO:点赞时，前端发请求去改变数据库中的该评论赞数，收到成功消息后+1，再点一次同样操作，点赞数-1-->
+                                            <a href="#" class="text-primary mr-1" style="font-size: 13px" activated="false">
+                                                <img src="assets/images/thumbs-up.png" style="width: 2%;height: 2%">
+                                                15
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                            <a href="#" class="text-danger" style="font-size: 13px" activated="false">
+                                                <img src="assets/images/thumbs-down.png" style="width: 2%;height: 2%">
+                                                26
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                            <a href="#" class="text-dark" style="font-size: 13px">
+                                                <i class="uil-trash"></i>
+                                                删除
+                                                <span>&nbsp;&nbsp;</span>
+                                            </a>
+                                            <span>发表于 2022-4-17 19:56</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-comments-single">
+                                    <div class="post-comment-avatar">
+                                        <img src="assets/images/avatars/avatar-2.jpg" alt="">
+                                    </div>
+                                    <div class="post-comment-text">
+                                        <div class="post-comment-text-inner">
+                                            <h6>Stella Johnson</h6>
+                                            <p> Ut wisi enim ad minim laoreet dolore <strong> David !</strong> </p>
+                                        </div>
+                                        <div class="uk-text-small">
                                             <a href="#" class="text-primary mr-1"> <i class="uil-thumbs-up"></i>15</a>
                                             <a href="#" class="text-danger"> <i class="uil-thumbs-down"></i>26</a>
                                             <span>发表于 2022-4-17 19:56</span>
@@ -1334,6 +1370,7 @@
     <script src="assets/js/api/auth/userAuth.js"></script>
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script src="assets/js/utils.js"></script>
+    <script src="assets/js/api/post/userPost.js"></script>
 
 </body>
 

@@ -38,7 +38,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService{
         SimpleMailMessage mailMessage=new SimpleMailMessage();
         mailMessage.setSubject("赭峦斋平台验证码");
         mailMessage.setText("您的验证码为："+code+"，请在60秒内使用。");
-        mailMessage.setTo(userEmail.split(":")[1]);
+        mailMessage.setTo(userEmail.split(":")[0]);
         mailMessage.setFrom("2418754520@qq.com");
         try{
             sender.send(mailMessage);

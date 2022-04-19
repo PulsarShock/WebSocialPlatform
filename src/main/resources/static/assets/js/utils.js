@@ -17,7 +17,7 @@ function post(url, data, success){
         type: "post",
         url: url,
         async: true,
-        data: data,
+        data: JSON.stringify(data),
         contentType: "application/json",
         xhrFields: {
             withCredentials: true

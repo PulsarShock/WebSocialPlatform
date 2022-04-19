@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -39,12 +40,12 @@ public class UserAuthServiceImpl implements UserAuthService  {
     }
 
     protected boolean isUserEmailMatchesPwd(String userEmail, String Pwd) {
-        String CryptPwd = mapper.getPwdByEmail(userEmail.split(":")[1]);//mapper使用的email都要去掉前缀
+        String CryptPwd = mapper.getPwdByEmail(userEmail.split(":")[0]);//mapper使用的email都要去掉前缀
         return encoder.matches(Pwd,CryptPwd);
     }
 
     protected boolean isUserEmailExists(String userEmail) {
-        return mapper.containsEmail(userEmail.split(":")[1])!=null;
+        return mapper.containsEmail(userEmail.split(":")[0])!=null;
     }
 
     protected boolean isTokenValid(String userEmail, String user_token) {
@@ -52,16 +53,17 @@ public class UserAuthServiceImpl implements UserAuthService  {
     }
 
     protected void createUserAccount(String userEmail, String password, String name) {
-        mapper.createUser(userEmail.split(":")[1],encoder.encode(password),name);
+        mapper.createUser(userEmail.split(":")[0],encoder.encode(password),name);
     }
 
     @Override
     public String loginProcess(Account account) {
         if(isUserEmailMatchesPwd(account.getUserEmail(),account.getPassword())){
-            account.setUserEmail(account.getUserEmail());
             if(operations.get(account.getUserEmail())!=null){
-                //TODO:这里我想实现一下单点登录，判断出该用户已登录时，新的登录直接把他踢下去，移除key，同时撤销那个session的授权，再重新写入key和新的token
-                stringRedisTemplate.delete(account.getUserEmail());
+                //如果redis已存在该用户token，那么查找所有email:Token:*模式的key，然后依次移除，这样就能保证新的登录可以把别的会话的认证踢下线
+                for (String key : Objects.requireNonNull(stringRedisTemplate.keys(account.getUserEmail().split(":")[0] + ":Token:*"))) {
+                    stringRedisTemplate.delete(key);
+                }
             }
             String user_token= DigestUtils.md5DigestAsHex((account.getUserEmail()+account.getPassword()+new Date()).getBytes(StandardCharsets.UTF_8));
             operations.set(account.getUserEmail(), user_token,60, TimeUnit.MINUTES);
@@ -79,7 +81,7 @@ public class UserAuthServiceImpl implements UserAuthService  {
         }
         if(verifyCodeService.checkCode(account.getUserEmail(), account.getVerifyCode())){
             createUserAccount(account.getUserEmail(), account.getPassword(), account.getUserName());
-            log.info("{} 成功注册！",account.getUserEmail().substring(5));
+            log.info("{} 成功注册！",account.getUserEmail().split(":")[0]);
         }
         throw new BaseProjectException(ExceptionEnum.WRONG_VERIFICATION_CODE);
     }
