@@ -12,7 +12,10 @@ function get(url, params, success){
     });
 }
 
-function post(url, data, success){
+function post(url, data, success,auth_params){
+    if(auth_params!==null){
+        url=url+"?user_email="+auth_params['user_email']+"&user_token="+auth_params['user_token']
+    }
     $.ajax({
         type: "post",
         url: url,

@@ -33,7 +33,7 @@
     <div id="wrapper">
 
         <!-- sidebar -->
-       <div class="main_sidebar">
+        <div class="main_sidebar">
            <div class="side-overlay" uk-toggle="target: #wrapper ; cls: collapse-sidebar mobile-visible"></div>
        
            <!-- sidebar header -->
@@ -213,11 +213,11 @@
        
        </div>
 
-       <!-- contents -->
-       <div class="main_content">
+        <!-- contents -->
+        <div class="main_content">
 
             <!-- header -->
-       <div id="main_header">
+           <div id="main_header">
            <header>
                <div class="header-innr">
 
@@ -236,7 +236,7 @@
                    <div class="head_user">
 
                        <!-- Message  notificiation dropdown -->
-                       <a href="#" class="opts_icon" uk-tooltip="title: Messages ; pos: bottom ;offset:7">
+                       <a  class="opts_icon" uk-tooltip="title: Messages ; pos: bottom ;offset:7">
                            <img src="assets/images/icons/chat.svg" alt=""> <span>4</span>
                        </a>
 
@@ -540,14 +540,14 @@
        </div>
 
 
-            <div class="main_content_inner" >
+           <div class="main_content_inner" >
 
 
                 <div uk-grid>
 
-                    <div class="uk-width-2-3@m fead-area" onload="get_all_posts(sessionStorage.getItem('user_email'))">
+                    <div id="space" class="uk-width-2-3@m fead-area" onload="get_all_posts(sessionStorage.getItem('user_email'))">
 
-                        <div class="post-newer mt-lg-2" style="width:150%">
+                        <div id="new_post" class="post-newer mt-lg-2" style="width:150%">
 
                             <div class="post-new" uk-toggle="target: body ; cls: post-focus">
                                 <div class="post-new-media">
@@ -582,7 +582,6 @@
                                             <img src="assets/images/avatars/avatar-2.jpg" alt="">
                                         </div>
                                         <div class="post-new-media-input" >
-                                            <!--TODO:这是写新动态的地方-->
                                             <textarea id="new_post" type="text" style="width: 100%;height: 380%;resize: none;" class="uk-input" placeholder="写下想法~"></textarea>
                                         </div>
                                     </div>
@@ -590,12 +589,14 @@
                                         <div></div>
 
                                     </div>
-                                    <a href="#" class="button primary px-6" style="position: absolute; bottom: 5%;right:5%"> 发布~ </a>
+                                    <a onclick="post_new()" class="button primary px-6" style="position: absolute; bottom: 5%;right:5%"> 发布~ </a>
                                 </div>
 
                             </div>
 
                         </div>
+
+                        <div id="wait_for_load" style="text-align: center;width: 150%">正在载入中</div>
 
                         <div class="post" style="width:150%" id="identity">
                             <!--TODO:这是一条完整的动态-->

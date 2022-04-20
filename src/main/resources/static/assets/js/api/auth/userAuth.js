@@ -36,7 +36,7 @@ function doregister() {
 
 function getverifycode() {
     let data=$.trim($("#UserEmail").val())
-    post("/api/auth/sendverifycode",data,function (resp) {
+    post("/api/auth/send_verify_code",data,function (resp) {
         let respbody=JSON.parse(resp)
         if(respbody["code"]===200){
             window.alert("已发出验证码！")
@@ -69,10 +69,12 @@ function dologin() {
             window.alert("登录成功！")//TODO:可能换个更好的提示方式？
             let user_params = {
                 "user_email": data.UserEmail,
-                "user_token": respbody["data"]
+                "user_token": respbody["data"]["user_token"],
+                "user_name":respbody["data"]["user_name"]
             }
             sessionStorage.setItem("user_token", user_params["user_token"])
             sessionStorage.setItem("user_email", user_params["user_email"])
+            sessionStorage.setItem("user_name", user_params["user_name"])
             relocate(user_params,"/feeds.html")
         }
         if(respbody["code"]===403){

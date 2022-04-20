@@ -16,6 +16,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -56,8 +58,12 @@ public class UserAuthServiceImpl implements UserAuthService  {
         mapper.createUser(userEmail.split(":")[0],encoder.encode(password),name);
     }
 
+    protected String getUserName(String userEmail){
+        return mapper.getUserName(userEmail.split(":")[0]);
+    }
+
     @Override
-    public String loginProcess(Account account) {
+    public Map<String,String> loginProcess(Account account) {
         if(isUserEmailMatchesPwd(account.getUserEmail(),account.getPassword())){
             if(operations.get(account.getUserEmail())!=null){
                 //如果redis已存在该用户token，那么查找所有email:Token:*模式的key，然后依次移除，这样就能保证新的登录可以把别的会话的认证踢下线
@@ -67,7 +73,11 @@ public class UserAuthServiceImpl implements UserAuthService  {
             }
             String user_token= DigestUtils.md5DigestAsHex((account.getUserEmail()+account.getPassword()+new Date()).getBytes(StandardCharsets.UTF_8));
             operations.set(account.getUserEmail(), user_token,60, TimeUnit.MINUTES);
-            return user_token;
+            String user_name= getUserName(account.getUserEmail());
+            Map<String,String> map=new HashMap<>();
+            map.put("user_name",user_name);
+            map.put("user_token",user_token);
+            return map;
         }
         else{
             throw new BaseProjectException(ExceptionEnum.LOGGING_FAILED);

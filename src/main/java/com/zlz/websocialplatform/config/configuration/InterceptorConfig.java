@@ -26,7 +26,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addInterceptor(apiVisitInterceptor())
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
-                        "/api/auth/login","/api/auth/logout","/api/auth/signup","/api/auth/sendverifycode"
+                        "/api/auth/login","/api/auth/logout","/api/auth/signup","/api/auth/send_verify_code"
                 );
         registry
                 .addInterceptor(pageInterceptor())

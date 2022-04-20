@@ -3,6 +3,7 @@ package com.zlz.websocialplatform.controller.api;
 import com.alibaba.fastjson.JSON;
 import com.zlz.websocialplatform.entity.Account.Account;
 import com.zlz.websocialplatform.entity.Account.AccountForSignup;
+import com.zlz.websocialplatform.entity.Account.NameAndToken;
 import com.zlz.websocialplatform.entity.RestBean;
 import com.zlz.websocialplatform.service.UserAuthService;
 import com.zlz.websocialplatform.service.VerifyCodeService;
@@ -26,11 +27,14 @@ public class AuthController {
     public String login(@RequestBody String userInfo, HttpSession session){
         log.info("登录用户信息：{}",userInfo);
         Account account = JSON.parseObject(userInfo).toJavaObject(Account.class);
-        RestBean<String> resp=new RestBean<>(200,"success!");
+        RestBean<NameAndToken> resp=new RestBean<>(200,"success!");
         //我用两种字符串前缀对code队列和token队列做了区分
         account.setUserEmail(account.getUserEmail()+":Token:"+session.getId());
-        String token=userAuthService.loginProcess(account);
-        return resp.setData(token).toString();
+        NameAndToken nat=new NameAndToken();
+        String token=userAuthService.loginProcess(account).get("user_token");
+        String name=userAuthService.loginProcess(account).get("user_name");
+        nat.setUser_name(name).setUser_token(token);
+        return resp.setData(nat).toString();
     }
 
     @GetMapping("/logout")
@@ -54,7 +58,7 @@ public class AuthController {
         return resp.toString();
     }
 
-    @PostMapping("/sendverifycode")
+    @PostMapping("/send_verify_code")
     public String sendCode(@RequestBody String userEmail){
         log.info("用户 {} 申请邮箱验证码",userEmail);
         RestBean<Void> resp=new RestBean<>(200,"success!");

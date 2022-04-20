@@ -14,4 +14,8 @@ public interface UserAuthMapper {
 
     @Select("select user_email from user_accounts where user_email=#{userEmail}")
     String containsEmail(@Param("userEmail") String userEmail);
+
+    @Select("select user_name from user_accounts where user_email=#{userEmail}")
+    String getUserName(@Param("userEmail") String userEmail);
+
 }
