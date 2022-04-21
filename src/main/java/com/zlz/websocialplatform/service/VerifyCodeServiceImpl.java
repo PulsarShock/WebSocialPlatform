@@ -2,6 +2,7 @@ package com.zlz.websocialplatform.service;
 
 import com.zlz.websocialplatform.exception.BaseProjectException;
 import com.zlz.websocialplatform.exception.ExceptionEnum;
+import com.zlz.websocialplatform.utils.MyUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.SimpleMailMessage;
@@ -33,8 +34,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService{
         if(isCodeExisted(userEmail)){
             throw new BaseProjectException(ExceptionEnum.VERIFICATION_CODE_STILL_EXIST);
         }
-        Random random=new Random();
-        String code=String.valueOf(random.nextInt(899999)+100000);
+        String code= MyUtils.randomCode();
         SimpleMailMessage mailMessage=new SimpleMailMessage();
         mailMessage.setSubject("赭峦斋平台验证码");
         mailMessage.setText("您的验证码为："+code+"，请在60秒内使用。");

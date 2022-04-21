@@ -3,8 +3,8 @@ package com.zlz.websocialplatform.entity;
 import java.io.Serializable;
 
 public class RestBean<T> {
-    int code;
-    String reason;
+    int code=200;
+    String reason="success!";
     T data;
 
     public RestBean(int code, String reason, T data) {
@@ -16,6 +16,9 @@ public class RestBean<T> {
     public RestBean(int code, String reason) {
         this.code = code;
         this.reason = reason;
+    }
+
+    public RestBean() {
     }
 
     public int getCode() {

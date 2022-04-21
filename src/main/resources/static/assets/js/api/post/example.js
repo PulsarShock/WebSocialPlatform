@@ -25,7 +25,6 @@ post_json_example={
         'activated': 'up' / 'down' / 'none'
     },
     'time_stamp': xxx,
-    'visited': xxx,
     'comments_closed': true_or_false,
     'content': xxx,
     'comments':['identities']

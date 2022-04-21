@@ -6,7 +6,11 @@ let auth_params={
 function get_all_posts(user_email) {
     post("/api/posts_and_comments/get_posts_list",user_email,function (resp) {
         let response=JSON.parse(resp)
-        let posts_list=response['data']['posts_list']
+        let posts_list=response['data']
+        if(posts_list===null){
+            window.alert("拉取失败，您或您的朋友还没发过动态哦~")
+            return;
+        }
         for (const id in posts_list) {
             let post_str=fill_in_post(get_single_post(id))
             $("#space>a").before($(post_str))
@@ -17,10 +21,10 @@ function get_all_posts(user_email) {
 
 function get_single_post(identity) {
     let response=null
-    post("/api/posts_and_comments/get_single_post",identity,function (resp) {
+    post("/api/posts_and_comments/get_single_post", {'identity':identity,'user_name':sessionStorage.getItem("user_email")},function (resp) {
         response=JSON.parse(resp)
     },auth_params)
-    return response['data']['post'];//obj
+    return response['data'];//obj
 }
 
 function fill_in_post(post_data) {//传参前记得转为obj
@@ -42,7 +46,6 @@ function fill_in_post(post_data) {//传参前记得转为obj
         "                                    <div>\n" +
         "                                        <p>发布于&nbsp;" + post_data['time_stamp'] + "</p>\n" +
         "                                    </div>\n" +
-        "                                    <p> 已有" + post_data['visited'] + "人看过</p>\n" +
         "                                </div>\n" +
         "\n" +
         "                            </div>\n" +
@@ -71,6 +74,9 @@ function get_all_comments(which_post,comments,is_closed) {
     if(is_closed===true){
         return null;
     }
+    if(comments===null){
+        return null;
+    }
     for (const id in comments) {
         let comment_str=fill_in_comment(get_single_comment(id))
         $("#"+which_post+"> div.post-state").after($(comment_str))
@@ -79,10 +85,10 @@ function get_all_comments(which_post,comments,is_closed) {
 
 function get_single_comment(identity) {
     let response=null
-    post("/api/posts_and_comments/get_single_comment",identity,function (resp) {
+    post("/api/posts_and_comments/get_single_comment",{'identity':identity,'user_name':sessionStorage.getItem("user_email")},function (resp) {
         response=JSON.parse(resp)
     },auth_params)
-    return response['data']['comment'];//obj
+    return response['data'];//obj
 }
 
 function fill_in_comment(comment_data) {//传参前记得转为obj
@@ -186,7 +192,7 @@ function up_or_down_it(button_obj,type) {
             let val=$(button_obj).find("span").text()
             $(button_obj).find("span").text(val-1)
             post("/api/posts_and_comments/change_up_down_state",{
-                'type':'post',
+                'table':'posts',
                 'identity': identity,
                 'user_email':user_email,
                 'confirm':confirm,
@@ -220,7 +226,7 @@ function up_or_down_it(button_obj,type) {
             let val=here.find("span").text()
             here.find("span").text(val+1)
             post("/api/posts_and_comments/change_up_down_state",{
-                'type':'post',
+                'table':'posts',
                 'identity': identity,
                 'user_email':user_email,
                 'confirm':confirm,
@@ -250,7 +256,7 @@ function up_or_down_it(button_obj,type) {
             let val=$(button_obj).text()
             $(button_obj).text(val-1)
             post("/api/posts_and_comments/change_up_down_state",{
-                'type':'post',
+                'table':'comments',
                 'identity': identity,
                 'user_email':user_email,
                 'confirm':confirm,
@@ -284,7 +290,7 @@ function up_or_down_it(button_obj,type) {
             let val=here.text()
             here.text(val+1)
             post("/api/posts_and_comments/change_up_down_state",{
-                'type':'post',
+                'table':'comments',
                 'identity': identity,
                 'user_email':user_email,
                 'confirm':confirm,
@@ -325,7 +331,7 @@ function shutdown_comments(button_obj,identity) {
 
 function delete_it(type,identity) {
     post("/api/posts_and_comments/delete",{
-        'type': type,
+        'table': type+'s',
         'identity':identity,
         'user_email':sessionStorage.getItem("user_email")
     },function (resp) {
@@ -395,13 +401,12 @@ function post_new() {
                 'identity':response['data']['identity'],
                 'user_name':sessionStorage.getItem("user_name"),
                 'time_stamp':response['data']['time_stamp'],
-                'content':val,
+                'content':response['data']['content'],
                 'ups_downs':{
                     'ups': 0,
                     'downs': 0,
                     'activated':'none'
                 },
-                'visited':0,
                 'comments_closed':"false",
                 'comments':[]
             }))
