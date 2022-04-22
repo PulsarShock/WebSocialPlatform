@@ -1,5 +1,7 @@
 package com.zlz.websocialplatform.entity.PostAndComments;
 
+import com.zlz.websocialplatform.entity.MyInteger;
+
 import java.util.List;
 
 public class Post {
@@ -12,7 +14,7 @@ public class Post {
     int downs;
     List<String> downsList;
     String commentClosed;
-    List<Integer> comments;
+    List<MyInteger> comments;
     String timeStamp;
 
     public int getPostID() {
@@ -105,11 +107,11 @@ public class Post {
         return this;
     }
 
-    public List<Integer> getComments() {
+    public List<MyInteger> getComments() {
         return comments;
     }
 
-    public Post setComments(List<Integer> comments) {
+    public Post setComments(List<MyInteger> comments) {
         this.comments = comments;
         return this;
     }

@@ -33,8 +33,9 @@ class WebSocialPlatformApplicationTests {
     void ttt(){
         //System.out.println(postAndCommentsMapper.getOnePost(1000009));
         //System.out.println(postAndCommentsMapper.getCommentsIDsOfPost(1000009));
-        System.out.println(postAndCommentsMapper.getUpsOrDownsList("up","posts",1000004));
-        System.out.println(postAndCommentsMapper.getUpsOrDownsList("down","posts",1000004));
+        //System.out.println(postAndCommentsMapper.getUpsOrDownsList("up","posts",1000004));
+        //System.out.println(postAndCommentsMapper.getUpsOrDownsList("down","posts",1000004));
+        System.out.println(postAndCommentsMapper.getPostsList("1784456958@qq.com").size());
     }
 
 }

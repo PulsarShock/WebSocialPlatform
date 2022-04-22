@@ -1,7 +1,7 @@
 package com.zlz.websocialplatform.service;
 
-import com.zlz.websocialplatform.exception.BaseProjectException;
-import com.zlz.websocialplatform.exception.ExceptionEnum;
+import com.zlz.websocialplatform.entity.exception.BaseProjectException;
+import com.zlz.websocialplatform.entity.exception.ExceptionEnum;
 import com.zlz.websocialplatform.utils.MyUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service

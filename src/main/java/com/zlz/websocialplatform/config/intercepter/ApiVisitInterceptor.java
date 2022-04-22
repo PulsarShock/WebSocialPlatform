@@ -1,18 +1,14 @@
 package com.zlz.websocialplatform.config.intercepter;
 
-import com.zlz.websocialplatform.exception.BaseProjectException;
-import com.zlz.websocialplatform.exception.ExceptionEnum;
-import com.zlz.websocialplatform.utils.MyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ApiVisitInterceptor implements HandlerInterceptor {
@@ -32,10 +28,12 @@ public class ApiVisitInterceptor implements HandlerInterceptor {
             return false;
         }
         ValueOperations<String,String> operations = stringRedisTemplate.opsForValue();
-            if(!user_token.equals(operations.get(user_email+":Token:"+sessionId))){
+        String real_token= operations.get(user_email+":Token:"+sessionId);
+        if(!user_token.equals(real_token)){
             response.sendRedirect("/error/invalidToken");
             return false;
         }
+        operations.set(user_email+":Token:"+sessionId,real_token,60, TimeUnit.MINUTES);
         return true;
     }
 

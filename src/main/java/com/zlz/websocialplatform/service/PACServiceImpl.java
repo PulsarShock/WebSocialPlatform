@@ -1,40 +1,53 @@
 package com.zlz.websocialplatform.service;
 
+import com.zlz.websocialplatform.entity.MyInteger;
 import com.zlz.websocialplatform.entity.PostAndComments.Comment;
 import com.zlz.websocialplatform.entity.PostAndComments.Post;
-import com.zlz.websocialplatform.exception.BaseProjectException;
-import com.zlz.websocialplatform.exception.ExceptionEnum;
+import com.zlz.websocialplatform.entity.exception.BaseProjectException;
+import com.zlz.websocialplatform.entity.exception.ExceptionEnum;
 import com.zlz.websocialplatform.mapper.PostAndCommentsMapper;
+import com.zlz.websocialplatform.mapper.UserAuthMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
 
+@Service
+@Slf4j
 public class PACServiceImpl implements PACService{
 
     @Resource
     PostAndCommentsMapper mapper;
+    @Resource
+    UserAuthMapper userAuthMapper;
 
     @Override
-    public List<Integer> getPostsList(String userEmail) {
-        return mapper.getPostsList(userEmail);
+    public List<MyInteger> getPostsList(String userEmail) {
+        log.info(String.valueOf(mapper.getPostsList(userEmail).size()));
+        return mapper.getPostsList("1784456958@qq.com");
     }
 
     @Override
     public Post getOnePost(int identity) {
-        return mapper.getOnePost(identity);
+        Post post=mapper.getOnePost(identity);
+        post.setUserName(userAuthMapper.getUserName(post.getUserEmail()));
+        return post;
     }
 
     @Override
     @Transactional
     public String checkWhetherUpedOrDowned(int identity, String userEmail,String table) {
-        List<String> upList= Arrays.asList(mapper.getUpsOrDownsList("up",table,identity).split(","));
-        if(upList.contains(userEmail)){
+        String list=mapper.getUpsOrDownsList("up",table,identity);
+        List<String> upList= list!=null?Arrays.asList(list.split(",")):null;
+        if(upList!=null&&upList.contains(userEmail)){
             return "up";
         }
-        List<String> downList= Arrays.asList(mapper.getUpsOrDownsList("down",table,identity).split(","));
-        if(downList.contains(userEmail)){
+        list=mapper.getUpsOrDownsList("down",table,identity);
+        List<String> downList=list!=null?Arrays.asList(list.split(",")):null;
+        if(downList!=null&&downList.contains(userEmail)){
             return "down";
         }
         return "none";
@@ -42,7 +55,9 @@ public class PACServiceImpl implements PACService{
 
     @Override
     public Comment getOneComment(int identity) {
-        return mapper.getOneComment(identity);
+        Comment comment=mapper.getOneComment(identity);
+        comment.setUserName(userAuthMapper.getUserName(comment.getUserEmail()));
+        return comment;
     }
 
     @Override

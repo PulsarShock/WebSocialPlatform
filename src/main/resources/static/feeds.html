@@ -21,6 +21,7 @@
     ================================================== -->
     <link rel="stylesheet" href="assets/css/icons.css">
     <script src="assets/js/fontawesome.js" ></script>
+    <script src="assets/js/api/post/userPost.js"></script>
 
     <!-- Google font
     ================================================== -->
@@ -545,7 +546,7 @@
 
                 <div uk-grid>
 
-                    <div id="space" class="uk-width-2-3@m fead-area" onload="get_all_posts(sessionStorage.getItem('user_email'))">
+                    <div id="space" class="uk-width-2-3@m fead-area" >
 
                         <div id="new_post" class="post-newer mt-lg-2" style="width:150%">
 
@@ -732,7 +733,7 @@
 
                         </div>
 
-                        <a href="#" style="text-decoration-line:underline;text-align: center;left: 40%;position: absolute">查看更多</a>
+                        <a onclick="get_all_posts(sessionStorage.getItem('user_email'))" style="text-decoration-line:underline;text-align: center;left: 40%;position: absolute">查看更多</a>
                     </div>
                 </div>
 
@@ -1371,7 +1372,7 @@
     <script src="assets/js/api/auth/userAuth.js"></script>
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script src="assets/js/utils.js"></script>
-    <script src="assets/js/api/post/userPost.js"></script>
+
 
 </body>
 

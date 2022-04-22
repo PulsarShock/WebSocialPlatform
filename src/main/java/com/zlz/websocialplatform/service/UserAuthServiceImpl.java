@@ -2,8 +2,8 @@ package com.zlz.websocialplatform.service;
 
 import com.zlz.websocialplatform.entity.Account.Account;
 import com.zlz.websocialplatform.entity.Account.AccountForSignup;
-import com.zlz.websocialplatform.exception.BaseProjectException;
-import com.zlz.websocialplatform.exception.ExceptionEnum;
+import com.zlz.websocialplatform.entity.exception.BaseProjectException;
+import com.zlz.websocialplatform.entity.exception.ExceptionEnum;
 import com.zlz.websocialplatform.mapper.UserAuthMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

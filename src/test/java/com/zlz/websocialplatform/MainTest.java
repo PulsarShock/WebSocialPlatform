@@ -15,20 +15,11 @@ import java.util.List;
 
 public class MainTest {
 
-    static class inner{
-        String mm;
 
-
-    }
 
     @Test
-    public void time(){
-        System.out.println(new SimpleDateFormat("yyyy-MM-hh HH:mm:ss").format(new Date()));
-    }
+    public void tt() {
 
-    @Test
-    public void tt(){
-        System.out.println(JSON.parseObject("{'mm':'hhh'}").toJavaObject(inner.class).mm);
     }
 
 }

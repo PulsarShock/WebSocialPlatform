@@ -1,6 +1,7 @@
 package com.zlz.websocialplatform.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.zlz.websocialplatform.entity.MyInteger;
 import com.zlz.websocialplatform.entity.PostAndComments.Comment;
 import com.zlz.websocialplatform.entity.PostAndComments.CommentForFront;
 import com.zlz.websocialplatform.entity.PostAndComments.Post;
@@ -59,8 +60,9 @@ public class PostAndCommentsController {
     @PostMapping("/get_posts_list")
     public String postsList(@RequestBody String userEmail){
         log.info("用户 {} 请求了动态列表",userEmail);
-        List<Integer> list=pacService.getPostsList(userEmail);
-        return new RestBean<List<Integer>>().setData(list).toString();
+        List<MyInteger> list=pacService.getPostsList(userEmail);
+        log.info(list.toString());
+        return new RestBean<List<MyInteger>>().setData(list).toString();
     }
 
     @PostMapping("/get_single_post")
@@ -84,9 +86,12 @@ public class PostAndCommentsController {
     @PostMapping("/change_up_down_state")
     public String change(@RequestBody String userInfo){
         userInfo2 userInfo2=JSON.parseObject(userInfo).toJavaObject(userInfo2.class);
-        log.info("用户 {} 对 {} "+(userInfo2.confirm.equals("no_confirmed")?null:(userInfo2.confirm.equals("up")?"赞了一下":"踩了一下"))
-                +(userInfo2.cancel.equals("no_canceled")?null:(userInfo2.cancel.equals("up")?"取消了赞":"取消了踩")),
-                userInfo2.user_email,userInfo2.identity);
+        if(!userInfo2.confirm.equals("no_confirmed")){
+            log.info("用户 {} 对 {} "+userInfo2.confirm+"了一下",userInfo2.user_email,userInfo2.identity);
+        }
+        else if(!userInfo2.cancel.equals("no_canceled")){
+            log.info("用户 {} 对 {} 取消了"+userInfo2.cancel,userInfo2.user_email,userInfo2.identity);
+        }
         pacService.changeState(userInfo2.identity,userInfo2.confirm,userInfo2.cancel,userInfo2.table,userInfo2.user_email);
         return new RestBean<Void>().toString();
     }

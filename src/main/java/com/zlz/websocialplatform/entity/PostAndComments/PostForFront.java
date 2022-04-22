@@ -1,5 +1,7 @@
 package com.zlz.websocialplatform.entity.PostAndComments;
 
+import com.zlz.websocialplatform.entity.MyInteger;
+
 import java.util.List;
 
 public class PostForFront {
@@ -9,7 +11,7 @@ public class PostForFront {
     String content;
     UpsAndDowns ups_downs;
     String comment_closed;
-    List<Integer> comments;
+    List<MyInteger> comments;
     String time_stamp;
 
     public PostForFront(Post post,String activated){

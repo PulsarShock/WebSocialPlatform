@@ -12,14 +12,14 @@ function get(url, params, success){
     });
 }
 
-function post(url, data, success,auth_params){
+function post(url, data, success,auth_params=null,async=true){
     if(auth_params!==null){
         url=url+"?user_email="+auth_params['user_email']+"&user_token="+auth_params['user_token']
     }
     $.ajax({
         type: "post",
         url: url,
-        async: true,
+        async: async,
         data: JSON.stringify(data),
         contentType: "application/json",
         xhrFields: {
@@ -29,6 +29,9 @@ function post(url, data, success,auth_params){
     });
 }
 
-function relocate(user_params,url){
+function relocate(user_params=null,url){
+    if(user_params===null){
+        window.location.href=url
+    }
     window.location.href=url+"?user_email="+user_params["user_email"]+"&user_token="+user_params["user_token"]
 }

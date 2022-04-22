@@ -6,36 +6,40 @@ let auth_params={
 function get_all_posts(user_email) {
     post("/api/posts_and_comments/get_posts_list",user_email,function (resp) {
         let response=JSON.parse(resp)
+        if(response['code']===401||response['code']===402){
+            window.alert(response['reason'])
+            relocate("/form-login.html")
+        }
         let posts_list=response['data']
-        if(posts_list===null){
+        if(posts_list.length===0){
             window.alert("拉取失败，您或您的朋友还没发过动态哦~")
             return;
         }
-        for (const id in posts_list) {
-            let post_str=fill_in_post(get_single_post(id))
+        posts_list.forEach(function (value) {
+            let post_str=fill_in_post(get_single_post(value))
             $("#space>a").before($(post_str))
-        }
+        })
         do_delete_it($("#wait_for_load"))
     },auth_params)
 }
 
 function get_single_post(identity) {
     let response=null
-    post("/api/posts_and_comments/get_single_post", {'identity':identity,'user_name':sessionStorage.getItem("user_email")},function (resp) {
+    post("/api/posts_and_comments/get_single_post", {'identity':identity,'user_email':sessionStorage.getItem("user_email")},function (resp) {
         response=JSON.parse(resp)
-    },auth_params)
-    return response['data'];//obj
+    },auth_params,false)
+    return response['data'];
 }
 
 function fill_in_post(post_data) {//传参前记得转为obj
-    return "<div class=\"post\" isclosed=\""+post_data['comments_closed']+"\" style=\"width:150%\" id=\"" + post_data['identity'] + "\">\n" +
+    return "<div class=\"post\" isclosed=\""+post_data['comment_closed']+"\" style=\"width:150%\" id=\"" + post_data['identity'] + "\">\n" +
         "                            <div class=\"post-heading\">\n" +
         "                                <div class=\"post-avature\">\n" +
-        "                                    <img src=\"assets/images/avatars/" + post_data['user_email'] + ".png\" alt=\"?\" id=\"avatar\">\n" +
+        "                                    <img src=\"assets/images/avatars/" + post_data['user_email'] + ".png\" alt=\"?\" >\n" +
         "                                </div>\n" +
         "                                <div class=\"post-title\">\n" +
         "                                    <a href=\"#\">\n" +
-        "                                        <h4 id=\"name\">" + post_data['user_name'] + "</h4>\n" +
+        "                                        <h4>" + post_data['user_name'] + "</h4>\n" +
         "                                    </a>\n" +
         "                                </div>\n" +
         "                               "+is_owned(post_data['user_email'],'post',post_data['identity'])+"\n"+
@@ -53,7 +57,7 @@ function fill_in_post(post_data) {//传参前记得转为obj
         "                            <div class=\"post-state\">\n" +
         "                                " + uped_or_downed(post_data['ups_downs'],'post') + "\n" +
         "                            </div>\n" +
-        "\n" +
+        "                            <div class='post-comments'>\n" +
         "                            <!-- post comments -->\n" +
         "                                " + get_all_comments(post_data['identity'],post_data['comments'],post_data['comments_closed']) + "\n" +
         "\n" +
@@ -66,40 +70,42 @@ function fill_in_post(post_data) {//传参前记得转为obj
         "                                    </div>\n" +
         "                                    <a onclick=\"reply_post(this)\" class=\"button primary px-4\" style=\"position: absolute;right: 1%\">发布~</a>\n" +
         "                                </div>\n" +
+        "                               </div>\n" +
         "                            </div>\n" +
         "                        </div>";
 }
 
 function get_all_comments(which_post,comments,is_closed) {
     if(is_closed===true){
-        return null;
+        return '';
     }
-    if(comments===null){
-        return null;
+    if(comments.length===0){
+        return '';
     }
-    for (const id in comments) {
-        let comment_str=fill_in_comment(get_single_comment(id))
-        $("#"+which_post+"> div.post-state").after($(comment_str))
-    }
+    comments.forEach(function (value) {
+        let comment_str=fill_in_comment(get_single_comment(value))
+        $("#"+which_post+"> div.post-comments >div.post-add-comment").before($(comment_str))
+    })
 }
 
 function get_single_comment(identity) {
     let response=null
-    post("/api/posts_and_comments/get_single_comment",{'identity':identity,'user_name':sessionStorage.getItem("user_email")},function (resp) {
+    post("/api/posts_and_comments/get_single_comment",{'identity':identity,'user_email':sessionStorage.getItem("user_email")},function (resp) {
         response=JSON.parse(resp)
-    },auth_params)
+    },auth_params,false)
+    console.log(response['data'])
     return response['data'];//obj
 }
 
 function fill_in_comment(comment_data) {//传参前记得转为obj
     return "<div class=\"post-comments-single\" id=\""+comment_data['identity']+"\">\n" +
         "                                    <div class=\"post-comment-avatar\">\n" +
-        "                                        <img src=\"assets/images/avatars/" + comment_data['user_email'] + ".png\" alt=\"?\" id=\"avatar\">\n" +
+        "                                        <img src=\"assets/images/avatars/" + comment_data['user_email'] + ".png\" alt=\"?\" >\n" +
         "                                    </div>\n" +
         "                                    <div class=\"post-comment-text\">\n" +
         "                                        <div class=\"post-comment-text-inner\">\n" +
-        "                                            <h6 id=\"user_name\"> "+comment_data['user_name']+"</h6>\n" +
-        "                                            <p id=\"content\">"+comment_data['content']+"</p>\n" +
+        "                                            <h6 > "+comment_data['user_name']+"</h6>\n" +
+        "                                            <p >"+comment_data['content']+"</p>\n" +
         "                                        </div>\n" +
         "                                        <div class=\"uk-text-small\">\n" +
         "                                          "+uped_or_downed(comment_data['ups_downs'],'comment')+"\n"+
@@ -153,7 +159,7 @@ function uped_or_downed(ups_downs,type) {
 }
 
 function is_owned(user_email,type,identity) {
-    let main_str=null
+    let main_str=''
     if(sessionStorage.getItem("user_email")===user_email){
         if(type==='post'){
             main_str="<div class=\"post-btn-action\">\n" +
@@ -178,9 +184,8 @@ function is_owned(user_email,type,identity) {
 }
 
 function up_or_down_it(button_obj,type) {
-    console.log("click")
     if (type==='post'){
-        let identity=$(button_obj).parentsUntil("div.post").attr('id')
+        let identity=$(button_obj).parentsUntil("div.space","div.post").attr('id')
         let user_email=sessionStorage.getItem('user_email')
         let cancel='no_canceled'
         let confirm="no_confirmed"
@@ -189,8 +194,8 @@ function up_or_down_it(button_obj,type) {
             let tmp_id=$(button_obj).attr("id")
             $(button_obj).find("img").attr("src","assets/images/thumbs-"+tmp_id+".png")
             cancel=tmp_id
-            let val=$(button_obj).find("span").text()
-            $(button_obj).find("span").text(val-1)
+            let val=$.trim($(button_obj).find("span").text())
+            $(button_obj).find("span").text(+val-1)
             post("/api/posts_and_comments/change_up_down_state",{
                 'table':'posts',
                 'identity': identity,
@@ -200,31 +205,30 @@ function up_or_down_it(button_obj,type) {
             },function (resp) {
                let response=JSON.parse(resp)
                 if(response['code']===200){
-                    window.alert("取消"+tmp_id==='up'?'点赞':'点踩'+"成功！")
+                    window.alert("取消"+(tmp_id==='up'?'点赞':'点踩')+"成功！")
                 }
                 if(response['code']===404){
                     window.alert("该动态已被删除！")
-                    do_delete_it($(button_obj).parentsUntil("div.post"))
+                    do_delete_it($(button_obj).parentsUntil("div.space","div.post"))
                 }
             },auth_params)
-
         }
         else {
             let here=$(button_obj)
             let tmp_id=here.attr("id")
-            let bro=$(button_obj).siblings("#"+tmp_id==="up"?"down":"up")
+            let bro=$(button_obj).siblings("#"+(tmp_id==="up"?"down":"up"))
             if(bro.attr("activated")==="true"){
                 cancel=bro.attr("id")
                 bro.attr("activated","false")
                 bro.find("img").attr("src","assets/images/thumbs-"+bro.attr("id")+".png")
-                let val=bro.find("span").text()
-                bro.find("span").text(val-1)
+                let val=$.trim(bro.find("span").text())
+                bro.find("span").text(+val-1)
             }
             confirm=tmp_id
             here.attr("activated","true")
             here.find("img").attr("src","assets/images/thumbs-"+tmp_id+"-activated.png")
-            let val=here.find("span").text()
-            here.find("span").text(val+1)
+            let val=$.trim(here.find("span").text())
+            here.find("span").text(+val+1)
             post("/api/posts_and_comments/change_up_down_state",{
                 'table':'posts',
                 'identity': identity,
@@ -234,17 +238,17 @@ function up_or_down_it(button_obj,type) {
             },function (resp) {
                 let response=JSON.parse(resp)
                 if(response['code']===200){
-                    window.alert(tmp_id==='up'?'点赞':'点踩'+"成功！")
+                    window.alert((tmp_id==='up'?'点赞':'点踩')+"成功！")
                 }
                 if(response['code']===404){
                     window.alert("该动态已被删除！")
-                    do_delete_it($(button_obj).parentsUntil("div.post"))
+                    do_delete_it($(button_obj).parentsUntil("div.space","div.post"))
                 }
             },auth_params)
         }
     }
     if (type==='comment'){
-        let identity=$(button_obj).parentsUntil("div.post").attr('id')
+        let identity=$(button_obj).parentsUntil("div.space","div.post").attr('id')
         let user_email=sessionStorage.getItem('user_email')
         let cancel='no_canceled'
         let confirm="no_confirmed"
@@ -253,8 +257,8 @@ function up_or_down_it(button_obj,type) {
             let tmp_id=$(button_obj).attr("id")
             $(button_obj).find("img").attr("src","assets/images/thumbs-"+tmp_id+".png")
             cancel=tmp_id
-            let val=$(button_obj).text()
-            $(button_obj).text(val-1)
+            let val=$.trim($(button_obj).text())
+            $(button_obj).text(+val-1)
             post("/api/posts_and_comments/change_up_down_state",{
                 'table':'comments',
                 'identity': identity,
@@ -264,11 +268,11 @@ function up_or_down_it(button_obj,type) {
             },function (resp) {
                 let response=JSON.parse(resp)
                 if(response['code']===200){
-                    window.alert("取消"+tmp_id==='up'?'点赞':'点踩'+"成功！")
+                    window.alert("取消"+(tmp_id==='up'?'点赞':'点踩')+"成功！")
                 }
                 if(response['code']===404){
                     window.alert("该动态已被删除！")
-                    do_delete_it($(button_obj).parentsUntil("div.post-comments-single"))
+                    do_delete_it($(button_obj).parentsUntil("div.post","div.post-comments-single"))
                 }
             },auth_params)
 
@@ -276,19 +280,19 @@ function up_or_down_it(button_obj,type) {
         else {
             let here=$(button_obj)
             let tmp_id=here.attr("id")
-            let bro=$(button_obj).siblings("#"+tmp_id==="up"?"down":"up")
+            let bro=$(button_obj).siblings("#"+(tmp_id==="up"?"down":"up"))
             if(bro.attr("activated")==="true"){
                 cancel=bro.attr("id")
                 bro.attr("activated","false")
                 bro.find("img").attr("src","assets/images/thumbs-"+bro.attr("id")+".png")
-                let val=bro.text()
-                bro.text(val-1)
+                let val=$.trim(bro.text())
+                bro.text(+val-1)
             }
             confirm=tmp_id
             here.attr("activated","true")
             here.find("img").attr("src","assets/images/thumbs-"+tmp_id+"-activated.png")
-            let val=here.text()
-            here.text(val+1)
+            let val=$.trim(here.text())
+            here.text(+val+1)
             post("/api/posts_and_comments/change_up_down_state",{
                 'table':'comments',
                 'identity': identity,
@@ -298,11 +302,11 @@ function up_or_down_it(button_obj,type) {
             },function (resp) {
                 let response=JSON.parse(resp)
                 if(response['code']===200){
-                    window.alert(tmp_id==='up'?'点赞':'点踩'+"成功！")
+                    window.alert((tmp_id==='up'?'点赞':'点踩')+"成功！")
                 }
                 if(response['code']===404){
                     window.alert("该动态已被删除！")
-                    do_delete_it($(button_obj).parentsUntil("div.post-comments-single"))
+                    do_delete_it($(button_obj).parentsUntil("div.post","div.post-comments-single"))
                 }
             },auth_params)
         }
@@ -310,7 +314,8 @@ function up_or_down_it(button_obj,type) {
 }
 
 function shutdown_comments(button_obj,identity) {
-    if($(button_obj).parentsUntil("div.post").attr("isclosed")==="true"){
+    if($(button_obj).parentsUntil("div.space","div.post").attr("isclosed")==="true"){
+        window.alert("已经关闭过评论了~")
         return;
     }
     if(!window.confirm("您确定要关闭这条动态的评论吗？该操作是一次性的！（误操作请找管理员撤回）")){
@@ -322,9 +327,9 @@ function shutdown_comments(button_obj,identity) {
     },function (resp) {
         let response=JSON.parse(resp)
         if(response['code']===200){
-            for (let findKey in $(button_obj).parentsUntil("div.post").find("div.post-comments-single")) {
-                do_delete_it(findKey)
-            }
+            $(button_obj).parentsUntil("div.space","div.post").find("div.post-comments-single").forEach(function (value) {
+                do_delete_it(value)
+            })
         }
     },auth_params)
 }
@@ -338,9 +343,12 @@ function delete_it(type,identity) {
         let response=JSON.parse(resp)
         if(response['code']===200){
             window.alert("删除成功！")
+            do_delete_it($("#"+identity))
+        }
+        else {
+            window.alert(response['reason'])
         }
     },auth_params)
-    do_delete_it($("#"+identity))
 }
 
 function do_delete_it(html_obj) {
@@ -356,7 +364,7 @@ function reply_post(button_obj) {
     if(val.length>200){
         window.alert("输入太多字符啦！")
     }
-    let identity=$(button_obj).parentsUntil("div.post").attr("id")
+    let identity=$(button_obj).parentsUntil("div.space","div.post").attr("id")
     post("/api/posts_and_comments/reply",{
         'identity':identity,
         'text':val,
@@ -364,7 +372,7 @@ function reply_post(button_obj) {
     },function (resp) {
         let response=JSON.parse(resp)
         if(response['code']===200){
-            $(button_obj).parentsUntil("div.post").find("div.post-add-comment").before(fill_in_comment({
+            $(button_obj).parentsUntil("div.space","div.post").find("div.post-add-comment").before(fill_in_comment({
                 'user_email':sessionStorage.getItem("user_email"),
                 'identity':response['data']['identity'],
                 'user_name':sessionStorage.getItem("user_name"),

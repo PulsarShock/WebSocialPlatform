@@ -1,5 +1,6 @@
 package com.zlz.websocialplatform.mapper;
 
+import com.zlz.websocialplatform.entity.MyInteger;
 import com.zlz.websocialplatform.entity.PostAndComments.Comment;
 import com.zlz.websocialplatform.entity.PostAndComments.Post;
 import org.apache.ibatis.annotations.*;
@@ -21,7 +22,6 @@ public interface PostAndCommentsMapper {
             @Result(column = "content",property = "content"),
             @Result(column = "ups",property = "ups"),
             @Result(column = "downs",property = "downs"),
-            @Result(column = "visited",property = "visited"),
             @Result(column = "comment_closed",property = "commentClosed"),
             @Result(column = "time_stamp",property = "timeStamp"),
             @Result(column = "post_id",property = "comments",javaType = List.class,many = @Many(select = "getCommentsIDsOfPost"))
@@ -29,11 +29,14 @@ public interface PostAndCommentsMapper {
     Post getOnePost(@Param("postID") int postID);
 
     @Select("select comment_id from comments where post_id=#{postID}")
-    List<Integer> getCommentsIDsOfPost(@Param("postID") int postID);
+    @ResultType(List.class)
+    @Result(column = "comment_id",property = "id")
+    List<MyInteger> getCommentsIDsOfPost(@Param("postID") int postID);
 
-    //TODO:这里目前只做了简单实现，以后要实现拉取用户自己及有好友关系的人的动态列表
     @Select("select post_id from posts where from_user_email=#{userEmail}")
-    List<Integer> getPostsList(@Param("userEmail")String userEmail);
+    @ResultType(List.class)
+    @Result(column = "post_id",property = "id")
+    List<MyInteger> getPostsList(@Param("userEmail") String userEmail);
 
     @Select("select * from comments where comment_id=#{commentID}")
     @Results({

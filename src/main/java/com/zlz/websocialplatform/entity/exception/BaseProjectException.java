@@ -1,4 +1,4 @@
-package com.zlz.websocialplatform.exception;
+package com.zlz.websocialplatform.entity.exception;
 
 public class BaseProjectException extends RuntimeException{
 

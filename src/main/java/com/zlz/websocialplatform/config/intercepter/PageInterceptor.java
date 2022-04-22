@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class PageInterceptor implements HandlerInterceptor {
@@ -27,10 +28,12 @@ public class PageInterceptor implements HandlerInterceptor {
             return false;
         }
         ValueOperations<String,String> operations = stringRedisTemplate.opsForValue();
-        if(!user_token.equals(operations.get(user_email+":Token:"+sessionId))){
+        String real_token= operations.get(user_email+":Token:"+sessionId);
+        if(!user_token.equals(real_token)){
             response.sendRedirect("/form-login.html");
             return false;
         }
+        operations.set(user_email+":Token:"+sessionId,real_token,60, TimeUnit.MINUTES);
         return true;
     }
 

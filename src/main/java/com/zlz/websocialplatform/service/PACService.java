@@ -1,5 +1,6 @@
 package com.zlz.websocialplatform.service;
 
+import com.zlz.websocialplatform.entity.MyInteger;
 import com.zlz.websocialplatform.entity.PostAndComments.Comment;
 import com.zlz.websocialplatform.entity.PostAndComments.Post;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface PACService {
 
-    List<Integer> getPostsList(String userEmail);
+    List<MyInteger> getPostsList(String userEmail);
 
     Post getOnePost(int identity);
 

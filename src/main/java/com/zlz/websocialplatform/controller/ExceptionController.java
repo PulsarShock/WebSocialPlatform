@@ -1,7 +1,7 @@
 package com.zlz.websocialplatform.controller;
 
 import com.zlz.websocialplatform.entity.RestBean;
-import com.zlz.websocialplatform.exception.BaseProjectException;
+import com.zlz.websocialplatform.entity.exception.BaseProjectException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
